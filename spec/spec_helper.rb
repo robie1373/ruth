@@ -3,9 +3,7 @@ SimpleCov.start
 
 require 'minitest/spec'
 require "minitest/autorun"
-require 'turn'
-require 'growl'
-require 'terminal-notifier-guard'
-require 'minitest'
+#require 'turn'
+#require 'terminal-notifier-guard'
 
-require 'watcher'
+require 'ruth'

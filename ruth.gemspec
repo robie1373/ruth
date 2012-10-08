@@ -17,14 +17,14 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_development_dependency 'rb-fsevent', '~>0.9.1'
+  #gem.add_development_dependency 'rb-fsevent'
   gem.add_development_dependency 'minitest'
-  gem.add_development_dependency 'minitest-spec', '~>0.0.2'
-  gem.add_development_dependency 'guard', '~>1.2.3'
-  gem.add_development_dependency 'guard-minitest', '~>0.5.0'
-  gem.add_development_dependency 'terminal-notifier-guard'
-  gem.add_development_dependency 'turn', '~>0.9.6'
-  gem.add_development_dependency 'simplecov', '~>0.6'
+  gem.add_development_dependency 'minitest-spec'
+  #gem.add_development_dependency 'guard'
+  #gem.add_development_dependency 'guard-minitest'
+  #gem.add_development_dependency 'terminal-notifier-guard'
+  #gem.add_development_dependency 'turn'
+  gem.add_development_dependency 'simplecov'
 
   # specify run dependencies here
   gem.add_dependency 'bundler', "~>1.1"
