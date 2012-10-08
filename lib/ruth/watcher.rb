@@ -3,13 +3,30 @@ require 'digest'
 require 'tempfile'
 require 'rb-fchange'
 require_relative './watched_file_getter'
+require_relative './notification'
 
-# The backend for this should be a REST API that will accept the posts of hashes
-# in a db. It should serve up the baseline to the remote service and provide
-# search for a hash to users.
 module Ruth
   class Watcher
+    def initialize(args)
+      @watched_file_list = args[:watched_file_list]
+      @time = args[:time] || Time
+      @notification = args[:notification]
+    end
 
+    def is_this_right
+      # This method teaches me how flipping mocks work. Grr. That was confusing.
+      # When the real functionality of the class looks like this I will have won.
+      @notification.new(:file => "#{ENV['home']}/.ruth/watchme.txt", :time => @time)
+    end
+
+    def watch
+      notifier = FChange::Notifier.new
+      @watched_file_list.each do |file|
+        notifier.watch(file, :all_events, :recursive) do |event|
+          @notification.new(:file => "#{ENV['home']}/.ruth/watchme.txt", :time => @time)
+        end
+      end
+    end
 #
 #    def hash_the_file(filename)
 #      if File.file?(filename)

@@ -1,9 +1,11 @@
 require 'simplecov'
 SimpleCov.start
-
-require 'minitest/spec'
-require "minitest/autorun"
+module Ruth
+  require 'minitest/spec'
+  require "minitest/autorun"
+  require 'minitest/mock'
 #require 'turn'
 #require 'terminal-notifier-guard'
 
-require 'ruth'
+  require 'ruth'
+end
