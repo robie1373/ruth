@@ -8,4 +8,6 @@ module Ruth
 #require 'terminal-notifier-guard'
 
   require 'ruth'
+
+
 end
