@@ -1,10 +1,11 @@
 module Ruth
   class Watched_file_getter
     def initialize
-      Struct.new("Config", :watch_list, :ignore_list)
+
     end
 
     def config
+      Struct.new("Config", :watch_list, :ignore_list)
       #noinspection RubyArgCount
       Struct::Config.new(parse_configs(read_config_file(watch_file)), parse_configs(read_config_file(ignore_file)))
     end

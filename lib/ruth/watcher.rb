@@ -21,12 +21,18 @@ module Ruth
 
     def watch
       notifier = FChange::Notifier.new
-      @watched_file_list.each do |file|
-        notifier.watch(file, :all_events, :recursive) do |event|
-          @notification.new(:file => "#{ENV['home']}/.ruth/watchme.txt", :time => @time)
-        end
-      end
+      #@watched_file_list.each do |file|
+      #  if File.directory? file
+      #    dir = File.dirname(file)
+      #  else
+      #    dir = file
+      #  end
+        notifier.watch(File.join(ENV['home'], ".ruth"), :all_events, :recursive) do | event |
+        p event
+        @notification.new(:file => "#{ENV['home']}/.ruth/watchme.txt", :time => @time)
+      #end
     end
+  end
 #
 #    def hash_the_file(filename)
 #      if File.file?(filename)
@@ -59,5 +65,5 @@ module Ruth
 #
 #  notifier.run
 #end
-  end # Watcher
+end # Watcher
 end # Module
