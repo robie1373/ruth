@@ -28,7 +28,7 @@ module Ruth
           dir = file
         end
       @notifier.watch(dir.to_s, :all_events, :recursive) do |event|
-        #p event.to_s
+        p event, event.watcher.path.to_s
         @notification.new(:file => event.watcher.path, :time => @time)
         end
       end

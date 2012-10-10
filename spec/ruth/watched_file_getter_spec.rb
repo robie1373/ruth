@@ -5,7 +5,14 @@ module Ruth
     before(:each) do
       @watched_file_getter = Watched_file_getter.new
       @watch_file = File.open(File.join(ENV['home'], ".ruth", "watch_file.txt"))
+      # This sets up the .ruth directory for use in the tests below. Yes I am using a real directory on your filesystem.
+      @housekeeper = Housekeeper.new
+      # @housekeeper.init_ruth
+
     end
+
+
+
 
     #describe "#read_config_file" do
     #  it "must return an array of the file contents" do
@@ -49,16 +56,8 @@ module Ruth
       end
 
       it "returns the files in the directory" do
-        dir_contents = ["#{ENV['home']}/.ruth/alerts.log",
-                        "#{ENV['home']}/.ruth/ignore_file.txt",
-                        "#{ENV['home']}/.ruth/interfolder/afile.txt",
-                        "#{ENV['home']}/.ruth/interfolder/anotherfile.txt",
-                        "#{ENV['home']}/.ruth/interfolder/bottomfolder/thatfile.txt",
-                        "#{ENV['home']}/.ruth/interfolder/bottomfolder/thisfile.txt",
-                        "#{ENV['home']}/.ruth/watchme.txt",
-                        "#{ENV['home']}/.ruth/watch_file.txt"]
         ruth_dir = File.join(ENV['home'], ".ruth")
-        dir_contents.each do |file|
+        @housekeeper.dir_contents.each do |file|
         @watched_file_getter.glob_files(ruth_dir).include?(file).should == true
           end
       end
