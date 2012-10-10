@@ -1,6 +1,9 @@
 .idea/
 .bundle/
 coverage
+rb-fchange
+
+Gemfile.lock
 
 # Compiled source #
 ###################

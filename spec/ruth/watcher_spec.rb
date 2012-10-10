@@ -7,20 +7,26 @@ module Ruth
         watched_file_list = [File.join(ENV['home'], ".ruth")]#Watched_file_getter.new.watched_files
         @time_object = Time.now
         @notification = double("notification")
-
         @watcher = Watcher.new(:watched_file_list => watched_file_list, :time => @time_object, :notification => @notification)
         @file_to_change = File.join(ENV['home'], ".ruth", "watchme.txt")
         File.open(@file_to_change, 'w') { |f| f.write "This is the only line allowed in this file.\n"}
         @watcher.watch
       end
 
-      it "must signal when a file has changed" do
-        @notification.should_receive(:new)#.with(:file => @file_to_change, :time => @time_object)
-        #@notification.expect(:new, true, [:file => @file_to_change, :time => @time_object])
+      it "must signal when a file in it's base has changed" do
+        @notification.should_receive(:new).with(:file => File.dirname(@file_to_change), :time => @time_object)
+        @watcher.run
         File.open(@file_to_change, 'a') { |f| f.write "This should not be in this file.\n" }
-        sleep 4
-        #@watcher.is_this_right
-        #@notification.valid?
+        @watcher.stop
+      end
+
+      it "must signal when a file in a subdir has changed" do
+        file_to_change = File.join(ENV['home'], ".ruth", "interfolder", "newfile.txt" )
+        @notification.should_receive(:new).with(:file => File.dirname(@file_to_change), :time => @time_object)
+        @watcher.run
+        File.open(file_to_change, 'a') { |f| f.write "This should not be in this file.\n" }
+        @watcher.stop
+        File.unlink file_to_change
       end
 
     end
