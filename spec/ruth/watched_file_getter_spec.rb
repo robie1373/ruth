@@ -8,11 +8,7 @@ module Ruth
       # This sets up the .ruth directory for use in the tests below. Yes I am using a real directory on your filesystem.
       @housekeeper = Housekeeper.new
       # @housekeeper.init_ruth
-
     end
-
-
-
 
     #describe "#read_config_file" do
     #  it "must return an array of the file contents" do
@@ -51,21 +47,33 @@ module Ruth
     end
 
     describe "#glob_files" do
+      before(:each) do
+        @ruth_dir = File.join(ENV['home'], ".ruth")
+      end
+
       it "returns an array of files in a directory" do
         @watched_file_getter.glob_files(ENV['home']).should be_an_instance_of Array
       end
 
       it "returns the files in the directory" do
-        ruth_dir = File.join(ENV['home'], ".ruth")
         @housekeeper.dir_contents.each do |file|
-        @watched_file_getter.glob_files(ruth_dir).include?(file).should == true
+        @watched_file_getter.glob_files(@ruth_dir).include?(file).should == true
           end
       end
 
       it "returns the filepath if a filepath is passed in" do
         real_file = File.join(ENV['home'], ".ruth", "watch_file.txt")
-        @watched_file_getter.glob_files(real_file).should == File.join(ENV['home'], ".ruth", "watch_file.txt")
+        @watched_file_getter.glob_files(real_file).should == File.join(@ruth_dir, "watch_file.txt")
       end
+
+      describe "#glob_files" do
+        it "must not contain any directories" do
+          @watched_file_getter.glob_files(@ruth_dir).each do |path|
+            File.directory?(path).should_not == true
+          end
+        end
+      end
+
     end
 
     describe "#ingore_files" do
