@@ -4,10 +4,19 @@ module Ruth
   describe Watched_file_getter do
     before(:each) do
       @watched_file_getter = Watched_file_getter.new
-      @watch_file = File.open(File.join(ENV['home'], ".ruth", "watch_file.txt"))
       # This sets up the .ruth directory for use in the tests below. Yes I am using a real directory on your filesystem.
-      @housekeeper = Housekeeper.new
-      # @housekeeper.init_ruth
+      @housekeeper = Housekeeper.new(:mode => :test)
+      @housekeeper.clean_up_ruth
+      begin
+        @housekeeper.init_ruth
+      rescue Errno::EEXIST
+
+      end
+      #@watch_file = File.join(ENV['home'], ".ruth", "watch_file.txt")
+    end
+
+    after(:each) do
+      #@housekeeper.clean_up_ruth
     end
 
     #describe "#read_config_file" do
@@ -57,8 +66,8 @@ module Ruth
 
       it "returns the files in the directory" do
         @housekeeper.dir_contents.each do |file|
-        @watched_file_getter.glob_files(@ruth_dir).include?(file).should == true
-          end
+          @watched_file_getter.glob_files(@ruth_dir).include?(file).should be_true, "expected dir_contents to include #{file} but it does not"
+        end
       end
 
       it "returns the filepath if a filepath is passed in" do

@@ -31,7 +31,7 @@ module Ruth
 
     private ##### Private methods line ########
     def read_config_file(file)
-      file.readlines
+      File.open(file) { |f| f.readlines }
     end
 
     def parse_configs(array)
@@ -48,11 +48,11 @@ module Ruth
     end
 
     def watch_file
-      File.open File.join(ENV['home'], ".ruth", "watch_file.txt")
+      File.join(ENV['home'], ".ruth", "watch_file.txt")
     end
 
     def ignore_file
-      File.open File.join(ENV['home'], ".ruth", "ignore_file.txt")
+      File.join(ENV['home'], ".ruth", "ignore_file.txt")
     end
   end
 end
