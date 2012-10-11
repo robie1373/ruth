@@ -13,23 +13,12 @@ module Ruth
       @notification = args[:notification]
     end
 
-    def is_this_right
-      # This method teaches me how flipping mocks work. Grr. That was confusing.
-      # When the real functionality of the class looks like this I will have won.
-      @notification.new(:file => "#{ENV['home']}/.ruth/watchme.txt", :time => @time)
-    end
-
     def watch
       @notifier = FChange::Notifier.new
       @watched_file_list.each do |file|
-        if File.file? file
-          dir = File.dirname(file)
-        else
-          dir = file
-        end
-      @notifier.watch(dir.to_s, :all_events, :recursive) do |event|
-        p event, event.watcher.path.to_s
-        @notification.new(:file => event.watcher.path, :time => @time)
+        dir = ensure_directory(:file => file)
+        @notifier.watch(dir.to_s, :all_events, :recursive) do |event|
+          @notification.new(:file => event.watcher.path, :time => @time)
         end
       end
     end
@@ -44,6 +33,16 @@ module Ruth
       sleep 0.6
       @notifier.stop
     end
+
+    private
+    def ensure_directory(args)
+      if File.file? args[:file]
+        File.dirname(args[:file])
+      else
+        args[:file]
+      end
+    end
+
 
 #
 #    def hash_the_file(filename)
