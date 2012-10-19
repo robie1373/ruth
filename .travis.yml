@@ -10,3 +10,11 @@ rvm:
   - rbx-19mode
 # uncomment this line if your project needs to run something other than `rake`:
 # script: bundle exec rspec spec
+
+env:
+  home=HOME
+
+matrix:
+  allow_failures:
+    - rvm: 1.9.2
+    - rvm: rbx-19mode

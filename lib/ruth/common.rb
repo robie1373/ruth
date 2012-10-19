@@ -1,7 +1,8 @@
 module Common
   def Common.dot_ruth
     if ENV['TRAVIS'] == true
-      File.join(ENV['HOME'], ".ruth")
+      require 'tmpdir'
+      File.join(Dir.tmpdir, ".ruth")
     else
       File.join(ENV['home'], ".ruth")
     end
