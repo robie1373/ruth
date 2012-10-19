@@ -14,9 +14,8 @@ module Ruth
       @notification = args[:notification]
     end
 
-    def watch_with_listen(what_to_watch)
-
-
+    def watch(what_to_watch)
+      callback = detect_change_type
       what_to_watch.map! { |i| ensure_directory(:file => i) }
       @listener = Listen.to(*what_to_watch)
       @listener.change(&callback)
@@ -24,7 +23,6 @@ module Ruth
 
     def run
       sleep 0.6
-      #Thread.new { @listener.start(false) }
       @listener.start(false)
       sleep 0.6
     end
@@ -35,7 +33,7 @@ module Ruth
     end
 
     private
-    def callback
+    def detect_change_type
       Proc.new do |modified, added, removed|
         if modified.length > 0
           notification.new(:file => modified, :action => :modified, :time => time)

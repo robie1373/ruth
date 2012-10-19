@@ -1,9 +1,14 @@
 module Ruth
   class Watched_file_getter
-    def config
+
+    def initialize
       Struct.new("Config", :watch_list, :ignore_list)
       #noinspection RubyArgCount
-      Struct::Config.new(parse_configs(read_config_file(watch_file)), parse_configs(read_config_file(ignore_file)))
+      @config = Struct::Config.new(parse_configs(read_config_file(watch_file)), parse_configs(read_config_file(ignore_file)))
+    end
+
+    def config
+      @config
     end
 
     def watched_files(config=config)
@@ -29,7 +34,7 @@ module Ruth
       ignore_files_array
     end
 
-    private ##### Private methods line ########
+    private
     def read_config_file(file)
       File.open(file) { |f| f.readlines }
     end
