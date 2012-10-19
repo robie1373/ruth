@@ -15,17 +15,7 @@ module Ruth
     end
 
     def watch_with_listen(what_to_watch)
-      callback = Proc.new do |modified, added, removed|
-        if modified.to_s.length > 0
-          notification.new(:file => modified.to_s, :action => :modified, :time => time)
-        elsif added.to_s.length > 0
-          notification.new(:file => added.to_s, :action => :added, :time => time)
-        elsif removed.to_s.length > 0
-          notification.new(:file => removed.to_s, :action => :removed, :time => time)
-        else
-          raise "unknown file event occurred"
-        end
-      end
+
 
       what_to_watch.map! { |i| ensure_directory(:file => i) }
       @listener = Listen.to(*what_to_watch)
@@ -45,6 +35,20 @@ module Ruth
     end
 
     private
+    def callback
+      Proc.new do |modified, added, removed|
+        if modified.length > 0
+          notification.new(:file => modified, :action => :modified, :time => time)
+        elsif added.length > 0
+          notification.new(:file => added, :action => :added, :time => time)
+        elsif removed.length > 0
+          notification.new(:file => removed, :action => :removed, :time => time)
+        else
+          raise "unknown file event occurred"
+        end
+      end
+    end
+
     def ensure_directory(args)
       if File.file? args[:file]
         File.dirname(args[:file])

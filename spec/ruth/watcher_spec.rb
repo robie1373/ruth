@@ -14,16 +14,16 @@ module Ruth
       end
 
       it "must signal when a file in its base has changed" do
-        @notification.should_receive(:new)#.with(:file => File.dirname(@file_to_change), :action => :modified, :time => @time_object).at_least(:once)
+        @notification.should_receive(:new).with(:file => [@file_to_change], :action => :modified, :time => @time_object).at_least(:once)
         @watcher.run
-        #File.open(@file_to_change, 'a') { |f| f.write "This should not be in this file.\n" }
-        FileUtils.touch @file_to_change
+        File.open(@file_to_change, 'a') { |f| f.write "This should not be in this file.\n" }
+        #FileUtils.touch @file_to_change
         @watcher.stop
       end
 
       it "must signal when a file in a subdir has changed" do
         file_to_change = File.join(ENV['home'], ".ruth", "interfolder", "newfile.txt" )
-        @notification.should_receive(:new)#.with(:file => File.dirname(@file_to_change), :action => :modified, :time => @time_object).at_least(:once)
+        @notification.should_receive(:new).with(:file => [@file_to_change], :action => :modified, :time => @time_object).at_least(:once)
         @watcher.run
         #File.open(file_to_change, 'a') { |f| f.write "This should not be in this file.\n" }
         FileUtils.touch file_to_change
