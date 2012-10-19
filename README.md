@@ -1,4 +1,5 @@
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/robie1373/ruth)
+[![Build Status](https://travis-ci.org/[robie1373]/[ruth].png)](https://travis-ci.org/[robie1373]/[ruth])
 # Ruth
 
 TODO: Ruth is an agent which gets installed on endpoints. Ruth will watch configured files and directories for changes. Ruth will keep hashes of all files in the watched directories with the help of Edgar (TODO: include link). Ruth uses hashes to determine if a change has occurred. Ruth will have a few notification options. Ruth will have Enterprise appropriate configuration and update tools.
