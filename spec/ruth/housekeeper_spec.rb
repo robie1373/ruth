@@ -21,7 +21,7 @@ module Ruth
       begin
         FileUtils.rm_rf @dot_ruth
       rescue
-        p ENV['home']
+        p ENV
         #p "no .ruth"
       end
     end
