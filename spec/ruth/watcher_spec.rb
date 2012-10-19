@@ -9,6 +9,7 @@ module Ruth
         begin
           @housekeeper.init_ruth
         rescue Errno::EEXIST
+          p "Housekeeping failed."
         end
       end
 
