@@ -5,7 +5,7 @@ module Ruth
 
     before(:each) do
       @housekeeper = Housekeeper.new(:mode => :test)
-      @dot_ruth = File.join(ENV['home'], ".ruth")
+      @dot_ruth = Common.dot_ruth
       FileUtils.rm_rf @dot_ruth
       @dir_contents= [File.join(@dot_ruth, "alerts.log"),
                       File.join(@dot_ruth, "ignore_file.txt"),

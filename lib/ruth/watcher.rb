@@ -2,11 +2,12 @@ require 'json'
 require 'digest'
 require 'tempfile'
 require 'listen'
-require_relative './watched_file_getter'
-require_relative './notification'
+#require_relative './watched_file_getter'
+#require_relative './notification'
 
 module Ruth
   class Watcher
+    include
     def initialize(args)
       @watched_file_list = args[:watched_file_list]
       @time = args[:time] || Time

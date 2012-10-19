@@ -8,5 +8,5 @@ require 'bundler'
 require 'ruth'
 
 module Ruth
-
+  include Common
 end

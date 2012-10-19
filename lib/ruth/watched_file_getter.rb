@@ -1,6 +1,7 @@
+#require_relative 'common'
 module Ruth
   class Watched_file_getter
-
+    include Common
     def initialize
       Struct.new("Config", :watch_list, :ignore_list)
       #noinspection RubyArgCount
@@ -53,11 +54,11 @@ module Ruth
     end
 
     def watch_file
-      File.join(ENV['home'], ".ruth", "watch_file.txt")
+      File.join(Common.dot_ruth, "watch_file.txt")
     end
 
     def ignore_file
-      File.join(ENV['home'], ".ruth", "ignore_file.txt")
+      File.join(Common.dot_ruth, "ignore_file.txt")
     end
   end
 end
