@@ -12,7 +12,6 @@ rvm:
 # script: bundle exec rspec spec
 
 env:
-  home=HOME
 
 matrix:
   allow_failures:
