@@ -30,5 +30,5 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'rake', '~>0.9.2'
   gem.add_dependency 'rb-fchange', '~>0.0.6'
   gem.add_dependency 'listen', '~> 0.5.3'
-  gem.add_dependency 'wdm', '~> 0.0.3'
+  gem.add_dependency 'wdm', '~> 0.0.3' if RUBY_PLATFORM =~ /(win32|w32)/
 end
