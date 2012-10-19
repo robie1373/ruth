@@ -1,7 +1,6 @@
 require 'json'
 require 'digest'
 require 'tempfile'
-require 'rb-fchange'
 require 'listen'
 require_relative './watched_file_getter'
 require_relative './notification'
