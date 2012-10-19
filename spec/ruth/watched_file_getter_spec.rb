@@ -2,15 +2,19 @@ require_relative '../spec_helper'
 
 module Ruth
   describe Watched_file_getter do
-    before(:each) do
-      # This sets up the .ruth directory for use in the tests below. Yes I am using a real directory on your filesystem.
-      @housekeeper = Housekeeper.new(:mode => :test)
-      @housekeeper.clean_up_ruth
-      begin
-        @housekeeper.init_ruth
-      rescue Errno::EEXIST
-
+    before(:all) do
+      def keep_house
+        @housekeeper = Housekeeper.new(:mode => :test)
+        @housekeeper.clean_up_ruth
+        begin
+          @housekeeper.init_ruth
+        rescue Errno::EEXIST
+        end
       end
+      keep_house
+    end
+
+    before(:each) do
       @watched_file_getter = Watched_file_getter.new
     end
 
