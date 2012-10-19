@@ -2,6 +2,7 @@ require 'json'
 require 'digest'
 require 'tempfile'
 require 'rb-fchange'
+require 'listen'
 require_relative './watched_file_getter'
 require_relative './notification'
 
@@ -13,25 +14,34 @@ module Ruth
       @notification = args[:notification]
     end
 
-    def watch
-      @notifier = FChange::Notifier.new
-      @watched_file_list.each do |file|
-        dir = ensure_directory(:file => file)
-        @notifier.watch(dir.to_s, :all_events, :recursive) do |event|
-          @notification.new(:file => event.watcher.path, :time => @time)
+    def watch_with_listen(what_to_watch)
+      callback = Proc.new do |modified, added, removed|
+        if modified.to_s.length > 0
+          notification.new(:file => modified.to_s, :action => :modified, :time => time)
+        elsif added.to_s.length > 0
+          notification.new(:file => added.to_s, :action => :added, :time => time)
+        elsif removed.to_s.length > 0
+          notification.new(:file => removed.to_s, :action => :removed, :time => time)
+        else
+          raise "unknown file event occurred"
         end
       end
+
+      what_to_watch.map! { |i| ensure_directory(:file => i) }
+      @listener = Listen.to(*what_to_watch)
+      @listener.change(&callback)
     end
 
     def run
       sleep 0.6
-      Thread.new { @notifier.run }
+      #Thread.new { @listener.start(false) }
+      @listener.start(false)
       sleep 0.6
     end
 
     def stop
       sleep 0.6
-      @notifier.stop
+      @listener.stop
     end
 
     private
@@ -41,6 +51,18 @@ module Ruth
       else
         args[:file]
       end
+    end
+
+    def watched_file_list
+      @watched_file_list
+    end
+
+    def time
+      @time
+    end
+
+    def notification
+      @notification
     end
 
 
