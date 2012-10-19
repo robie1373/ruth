@@ -22,6 +22,7 @@ module Ruth
         FileUtils.rm_rf @dot_ruth
       rescue
         p ENV['TRAVIS']
+        p Common.dot_ruth
         #p "no .ruth"
       end
     end
