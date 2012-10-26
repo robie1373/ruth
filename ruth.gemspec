@@ -17,7 +17,8 @@ Gem::Specification.new do |gem|
   gem.test_files = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_development_dependency 'guard', '~> 1.4.0' if RUBY_PLATFORM =~ /darwin/i
+  gem.add_development_dependency 'guard', '~> 1.4.0' if RUBY_PLATFORM =~ /(darwin|win32|w32)/i
+  gem.add_development_dependency 'guard-rspec' if RUBY_PLATFORM =~ /(darwin|win32|w32)/i
   gem.add_development_dependency 'terminal-notifier-guard', '~> 1.5.3' if RUBY_PLATFORM =~ /darwin/i
   gem.add_development_dependency 'turn', '< 0.8.3' if RUBY_PLATFORM =~ /darwin/i
   gem.add_development_dependency 'win32console' if RUBY_PLATFORM =~ /(win32|w32)/
@@ -30,4 +31,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'listen', '~> 0.5.3'
   gem.add_dependency 'wdm', '~> 0.0.3' if RUBY_PLATFORM =~ /(win32|w32)/
   gem.add_dependency 'rb-fsevent', '~> 0.9.2' if RUBY_PLATFORM =~ /darwin/i
+  gem.add_dependency 'rb-fchange', '~> 0.0.6' if RUBY_PLATFORM =~ /(win32|w32)/i
+  gem.add_dependency 'rb-inotify' if RUBY_PLATFORM =~ /linux/i
 end

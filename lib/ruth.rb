@@ -4,6 +4,7 @@ require "ruth/watcher"
 require "ruth/housekeeper"
 require "ruth/watched_file_getter"
 require 'ruth/notification'
+require 'ruth/hasher'
 
 
 # The backend for this should be a REST API that will accept the posts of hashes
