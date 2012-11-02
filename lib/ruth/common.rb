@@ -8,4 +8,5 @@ module Common
       File.join(ENV['HOME'], ".ruth")
     end
   end
+
 end

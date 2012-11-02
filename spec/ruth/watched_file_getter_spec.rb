@@ -2,22 +2,19 @@ require_relative '../spec_helper'
 
 module Ruth
   describe Watched_file_getter do
+    include Set_up_methods
     before(:all) do
-      def keep_house
-        @housekeeper = Housekeeper.new(:mode => :test)
-        @housekeeper.clean_up_ruth
-        begin
-          @housekeeper.init_ruth
-        rescue Errno::EEXIST
-        end
-      end
-      keep_house
+      Set_up_methods.keep_house
     end
 
     before(:each) do
       @watched_file_getter = Watched_file_getter.new
+      @housekeeper = Housekeeper.new(:mode => :test)
     end
 
+    after(:all) do
+      Housekeeper.new(:mode => :test).clean_up_ruth
+    end
     #describe "#read_config_file" do
     #  it "must return an array of the file contents" do
     #    @watched_file_getter.read_config_file(@watch_file).should be_an_instance_of Array
@@ -87,7 +84,7 @@ module Ruth
     describe "#ingore_files" do
       before(:each) do
         @watched_file_getter = Watched_file_getter.new
-        @config = @watched_file_getter.config
+        @config              = @watched_file_getter.config
       end
 
       it "must be an array" do
@@ -105,7 +102,7 @@ module Ruth
     describe "#watched_files" do
       before(:each) do
         @watched_file_getter = Watched_file_getter.new
-        @config = @watched_file_getter.config
+        @config              = @watched_file_getter.config
       end
 
       it "must be an array" do

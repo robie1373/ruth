@@ -1,4 +1,5 @@
 require 'fileutils'
+
 module Ruth
   class Housekeeper
     include Common

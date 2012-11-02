@@ -1,28 +1,23 @@
 require_relative '../spec_helper'
 
 module Ruth
-  describe Watcher do
+  describe Watcher, :speed => 'slow' do
+    include Set_up_methods
     before(:all) do
-      def keep_house
-        @housekeeper = Housekeeper.new(:mode => :test)
-        @housekeeper.clean_up_ruth
-        begin
-          @housekeeper.init_ruth
-        rescue Errno::EEXIST
-          p "Housekeeping failed."
-        end
-      end
+      Set_up_methods.keep_house
+    end
 
-      keep_house
+    after(:all) do
+      Housekeeper.new(:mode => :test).clean_up_ruth
     end
 
     describe "#watch" do
       before(:each) do
-        watched_file_list = Watched_file_getter.new.watched_files 
-        @time_object = Time.now
-        @notification = double("notification")
-        @watcher = Watcher.new(:watched_file_list => watched_file_list, :time => @time_object, :notification => @notification)
-        @file_to_change = File.join(Common.dot_ruth, "watchme.txt")
+        watched_file_list = Watched_file_getter.new.watched_files
+        @time_object      = Time.now
+        @notification     = double("notification")
+        @watcher          = Watcher.new(:watched_file_list => watched_file_list, :time => @time_object, :notification => @notification)
+        @file_to_change   = File.join(Common.dot_ruth, "watchme.txt")
         File.open(@file_to_change, 'w') { |f| f.write "This is the only line allowed in this file.\n" }
         @watcher.watch(watched_file_list)
       end

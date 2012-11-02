@@ -9,4 +9,17 @@ require 'ruth'
 
 module Ruth
   include Common
+
+  module Set_up_methods
+    def Set_up_methods.keep_house
+      @housekeeper = Housekeeper.new(:mode => :test)
+      @housekeeper.clean_up_ruth
+      begin
+        @housekeeper.init_ruth
+      rescue Errno::EEXIST
+        p "Housekeeping failed."
+      end
+    end
+  end
+
 end
