@@ -1,6 +1,12 @@
 require_relative '../spec_helper'
 
 module Ruth
+  def self.unlink_error(file)
+    p "unlinking problem. Sleeping 5 and trying again."
+    sleep 5
+    File.unlink file
+  end
+
   describe Watcher do
     include Set_up_methods
     before(:all) do
@@ -40,9 +46,7 @@ module Ruth
         begin
           File.unlink file_to_change
         rescue
-          p "unlinking problem. Sleeping 5 and trying again."
-          sleep 5
-          File.unlink file_to_change
+          unlink_error(file_to_change)
         end
       end
 
@@ -76,9 +80,7 @@ module Ruth
         begin
           File.unlink file_to_add
         rescue
-          p "unlinking problem. Sleeping 5 and trying again."
-          sleep 5
-          File.unlink file_to_add
+          unlink_error(file_to_add)
         end
       end
 
@@ -92,9 +94,7 @@ module Ruth
         begin
           File.unlink file_to_remove
         rescue
-          p "unlinking problem. Sleeping 5 and trying again."
-          sleep 5
-          File.unlink file_to_remove
+          unlink_error(file_to_remove)
         end
         @watcher.stop
       end
