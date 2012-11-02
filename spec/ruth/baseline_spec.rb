@@ -5,10 +5,16 @@ module Ruth
   describe Baseline do
     def hash_files(file_list, hasher, algorithm)
       hashed_files = Hash.new
-      file_list.map do |file|
-        hashed_files[file] = hasher.md5(file) if algorithm == :md5
-        hashed_files[file] = hasher.sha1(file) if algorithm == :sha1
+      file_list.each do |file|
+        if algorithm == :md5
+          hashed_files[file] = hasher.md5(file)
+        elsif algorithm == :sha1
+          hashed_files[file] = hasher.sha1(file)
+        else
+          raise "unknown algorithm"
+        end
       end
+      hashed_files
     end
 
     before(:all) do
@@ -25,9 +31,12 @@ module Ruth
         @file_list = Housekeeper.new(:mode => :test).dir_contents
       end
 
-      it "should return a hash of file paths => hashes for list of files passed in" do
-        pending "finish cleaning up set up stuff in helper module"
-        @baseline.baseline(:file_list => @file_list, :algorithm => :md5).should == hash_files(@file_list, Hasher.new, :md5)
+      it "should return a hash of file paths => md5 hashes for array of files passed in" do
+        @baseline.baseline(:file_list => @file_list, :algorithm => :md5, :hasher => Hasher.new).should == hash_files(@file_list, Hasher.new, :md5)
+      end
+
+      it "should return a hash of file paths => sha1 hashes for array of files passed in" do
+        @baseline.baseline(:file_list => @file_list, :algorithm => :sha1, :hasher => Hasher.new).should == hash_files(@file_list, Hasher.new, :sha1)
       end
     end
   end

@@ -1,7 +1,7 @@
 require_relative '../spec_helper'
 
 module Ruth
-  describe Watcher, :speed => 'slow' do
+  describe Watcher do
     include Set_up_methods
     before(:all) do
       Set_up_methods.keep_house
@@ -22,7 +22,7 @@ module Ruth
         @watcher.watch(watched_file_list)
       end
 
-      it "must signal when a file in its base has changed" do
+      it "must signal when a file in its base has changed", :speed => 'slow' do
         @notification.should_receive(:new)
         @watcher.run
         #File.open(@file_to_change, 'a') { |f| f.write "This should not be in this file.\n" }
@@ -30,7 +30,7 @@ module Ruth
         @watcher.stop
       end
 
-      it "must signal when a file in a subdir has changed" do
+      it "must signal when a file in a subdir has changed", :speed => 'slow' do
         file_to_change = File.join(Common.dot_ruth, "interfolder", "newfile.txt")
         @notification.should_receive(:new)
         @watcher.run
@@ -46,7 +46,7 @@ module Ruth
         end
       end
 
-      it "must include the change action and time in the notification" do
+      it "must include the change action and time in the notification", :speed => 'slow' do
         @notification.should_receive(:new).with(:file => kind_of(Array), :action => :modified, :time => @time_object)
         @watcher.run
         #File.open(@file_to_change, 'a') { |f| f.write "This should not be in this file.\n" }
@@ -54,7 +54,7 @@ module Ruth
         @watcher.stop
       end
 
-      it "must include the file paths that were changed in the notification" do
+      it "must include the file paths that were changed in the notification", :speed => 'slow' do
         @notification.should_receive(:new) do |args|
           args[:file].should include(@file_to_change)
         end
@@ -64,7 +64,7 @@ module Ruth
         @watcher.stop
       end
 
-      it "must set :action => :added when a file is created" do
+      it "must set :action => :added when a file is created", :speed => 'slow' do
         file_to_add = File.join(Common.dot_ruth, "added_during_test.txt")
         @notification.should_receive(:new) do |args|
           args[:action].should == :added
@@ -82,7 +82,7 @@ module Ruth
         end
       end
 
-      it "must set :action => :removed when a file is deleted" do
+      it "must set :action => :removed when a file is deleted", :speed => 'slow' do
         file_to_remove = File.join(Common.dot_ruth, "removed_during_test.txt")
         FileUtils.touch file_to_remove
         @notification.should_receive(:new) do |args|
