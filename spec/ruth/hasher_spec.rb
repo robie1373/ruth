@@ -23,32 +23,28 @@ module Ruth
       @housekeeper.clean_up_ruth
     end
 
-    it "should return the hash of the file passed in", :integration => true do
-      pending "Integration"
-    end
-
-    it "should return a SHA hash or MD5 hash based on input", :integration => true do
-      pending "Integration"
-    end
-
     describe "#md5" do
-
-      it "should return the md5 hash of the file passed in" do
-        file = Test_file.new(:path => @path)
-        file.md5.should == @md5hash.digest(@data)
-      end
-    end
-
-    describe "#sha" do
       before(:each) do
-        @sha256hash = OpenSSL::Digest::SHA256.new
+        @hasher  = Hasher.new
+        @md5hash = OpenSSL::Digest::MD5.new
       end
 
-      it "should return the sha hash of the file passed in" do
-        pending "todo"
-        @path.sha.should == @sha256hash.digest(@data)
+      it "should return the md5 hash of the file path passed in" do
+        @hasher.md5(@path).should == @md5hash.digest(@data)
       end
     end
+
+    describe "#sha1" do
+      before (:each) do
+        @hasher = Hasher.new
+        @sha1hash = OpenSSL::Digest::SHA1.new
+      end
+
+      it "should return the sha1 hash of the file path passed in" do
+        @hasher.sha1(@path).should == @sha1hash.digest(@data)
+      end
+    end
+
 
   end
 end
