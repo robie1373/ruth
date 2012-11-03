@@ -17,24 +17,25 @@ module Ruth
     describe "#md5" do
       before(:each) do
         @hasher  = Hasher.new
-        @md5hash = OpenSSL::Digest::MD5.new
+        #@md5hash = OpenSSL::Digest::MD5.new
       end
 
       it "should return the md5 hash of the file path passed in" do
-        @hasher.md5(@path).should == @md5hash.digest(@data)
+        @hasher.md5(@path).should == Digest::MD5.hexdigest(@data)
       end
     end
 
-    describe "#sha1" do
-      before (:each) do
-        @hasher   = Hasher.new
-        @sha1hash = OpenSSL::Digest::SHA1.new
-      end
+    #describe "#sha1" do
+    #  pending "maybe get rid of this"
+    #  before (:each) do
+    #    @hasher   = Hasher.new
+    #    #@sha1hash = OpenSSL::Digest::SHA1.new
+    #  end
 
-      it "should return the sha1 hash of the file path passed in" do
-        @hasher.sha1(@path).should == @sha1hash.digest(@data)
-      end
-    end
+    #  it "should return the sha1 hash of the file path passed in" do
+    #    @hasher.sha1(@path).should == @sha1hash.digest(@data)
+    #  end
+    #end
 
 
   end

@@ -6,6 +6,7 @@ require "ruth/watched_file_getter"
 require 'ruth/notification'
 require 'ruth/hasher'
 require 'ruth/baseline'
+require 'ruth/persist'
 
 # The backend for this should be a REST API that will accept the posts of hashes
 # in a db. It should serve up the baseline to the remote service and provide

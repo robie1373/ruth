@@ -1,15 +1,10 @@
-require 'openssl'
+require 'digest/md5'
 
 module Ruth
   class Hasher
 
     def md5(file_path)
-      OpenSSL::Digest::MD5.new.digest(File.read(file_path))
+      Digest::MD5.hexdigest(File.read(file_path))
     end
-
-    def sha1(file_path)
-      OpenSSL::Digest::SHA1.new.digest(File.read(file_path))
-    end
-
   end
 end
