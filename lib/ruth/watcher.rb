@@ -7,7 +7,6 @@ require 'listen'
 
 module Ruth
   class Watcher
-    include
     def initialize(args)
       @watched_file_list = args[:watched_file_list]
       @time = args[:time] || Time

@@ -1,3 +1,5 @@
+.rspec
+._rspec
 .idea/
 .bundle/
 coverage
