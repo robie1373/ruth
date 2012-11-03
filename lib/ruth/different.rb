@@ -8,6 +8,7 @@ module Ruth
       hasher = Hasher.new
       current = hasher.md5 file_path
       original = baseline_value(file_path)
+      #p file_path, current, original
       current != original
     end
 
