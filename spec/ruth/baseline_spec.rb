@@ -3,16 +3,10 @@ require_relative '../spec_helper'
 module Ruth
   include Set_up_methods
   describe Baseline do
-    def hash_files(file_list, hasher, algorithm)
+    def hash_files(file_list, hasher)
       hashed_files = Hash.new
       file_list.each do |file|
-        if algorithm == :md5
-          hashed_files[file] = hasher.md5(file)
-        #elsif algorithm == :sha1
-        #  hashed_files[file] = hasher.sha1(file)
-        else
-          raise "unknown algorithm"
-        end
+        hashed_files[file] = hasher.md5(file)
       end
       hashed_files
     end
@@ -32,12 +26,9 @@ module Ruth
       end
 
       it "should return a hash of file paths => md5 hashes for array of files passed in" do
-        @baseline.baseline(:file_list => @file_list, :algorithm => :md5, :hasher => Hasher.new).should == hash_files(@file_list, Hasher.new, :md5)
+        @baseline.baseline(:file_list => @file_list, :algorithm => :md5, :hasher => Hasher.new).should == hash_files(@file_list, Hasher.new)
       end
 
-      #it "should return a hash of file paths => sha1 hashes for array of files passed in" do
-      #  @baseline.baseline(:file_list => @file_list, :algorithm => :sha1, :hasher => Hasher.new).should == hash_files(@file_list, Hasher.new, :sha1)
-      #end
     end
   end
 end

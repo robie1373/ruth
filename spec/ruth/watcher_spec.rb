@@ -31,7 +31,6 @@ module Ruth
       it "must signal when a file in its base has changed", :speed => 'slow' do
         @notification.should_receive(:new)
         @watcher.run
-        #File.open(@file_to_change, 'a') { |f| f.write "This should not be in this file.\n" }
         FileUtils.touch @file_to_change
         @watcher.stop
       end
@@ -40,7 +39,6 @@ module Ruth
         file_to_change = File.join(Common.dot_ruth, "interfolder", "newfile.txt")
         @notification.should_receive(:new)
         @watcher.run
-        #File.open(file_to_change, 'a') { |f| f.write "This should not be in this file.\n" }
         FileUtils.touch file_to_change
         @watcher.stop
         begin
@@ -53,7 +51,6 @@ module Ruth
       it "must include the change action and time in the notification", :speed => 'slow' do
         @notification.should_receive(:new).with(:file => kind_of(Array), :action => :modified, :time => @time_object)
         @watcher.run
-        #File.open(@file_to_change, 'a') { |f| f.write "This should not be in this file.\n" }
         FileUtils.touch @file_to_change
         @watcher.stop
       end
@@ -63,7 +60,6 @@ module Ruth
           args[:file].should include(@file_to_change)
         end
         @watcher.run
-        #File.open(@file_to_change, 'a') { |f| f.write "This should not be in this file.\n" }
         FileUtils.touch @file_to_change
         @watcher.stop
       end
