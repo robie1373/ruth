@@ -19,10 +19,15 @@ module Ruth
 
     after(:each) do
       begin
-        FileUtils.rm_rf @dot_ruth
+        #FileUtils.rm_rf @dot_ruth
+        Housekeeper.new(:mode => :test).clean_up_ruth
       rescue
         #p "no .ruth"
       end
+    end
+
+    after(:all) do
+      Housekeeper.new(:mode => :test).clean_up_ruth
     end
 
     describe "#init_ruth" do

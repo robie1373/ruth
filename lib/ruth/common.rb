@@ -13,4 +13,8 @@ module Common
     File.join(Common.dot_ruth, "alerts.log")
   end
 
+  def Common.start_up_log
+    File.join(Common.dot_ruth, "start_up.log")
+  end
+
 end
