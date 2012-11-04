@@ -18,7 +18,7 @@ module Ruth
         file_path   = File.join(Common.dot_ruth, "watchme.txt")
         logger = Logger.new
         logger.log(:file => file_path, :action => :modified, :time => time_object)
-        File.read(Common.log_file).should match /#{file_path}.*#{time_object}/
+        File.read(Common.log_file).should match %r{#{file_path}.*#{time_object}}
       end
     end
   end

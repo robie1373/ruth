@@ -12,7 +12,7 @@ module Ruth
     describe "#notify" do
       it "must put the notification to the terminal if so desired" do
         @notification.notify(:destination => @output, :file => @file_path, :action => :modified, :time => @time_object)
-        @output.string.should match(/#{@file_path}.*#{@time_object}/)
+        @output.string.should match %r{#{@file_path}.*#{@time_object}}
       end
     end
 
