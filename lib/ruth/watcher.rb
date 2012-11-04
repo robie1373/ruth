@@ -34,7 +34,6 @@ module Ruth
     private
     def detect_change_type
       Proc.new do |modified, added, removed|
-        p modified.length, added.length, removed.length
         if modified.length > 0
           notification.new(:file => modified, :action => :modified, :time => time) if different?(modified)
         elsif added.length > 0

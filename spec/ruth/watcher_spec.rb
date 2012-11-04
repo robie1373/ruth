@@ -37,14 +37,14 @@ module Ruth
         @watcher.stop
       end
 
-      it "must signal if the contents of the file has changed" do
+      it "must signal if the contents of the file has changed", :speed => 'slow' do
         @notification.should_receive(:new)
         @watcher.run
         File.open(@file_to_change, 'a') { |f| f.write "This is a change" }
         @watcher.stop
       end
 
-      it "must not signal if a file was accessed but not changed" do
+      it "must not signal if a file was accessed but not changed", :speed => 'slow' do
         @notification.should_not_receive(:new)
         @watcher.run
         File.read @file_to_change

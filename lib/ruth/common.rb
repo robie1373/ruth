@@ -9,4 +9,8 @@ module Common
     end
   end
 
+  def Common.log_file
+    File.join(Common.dot_ruth, "alerts.log")
+  end
+
 end
