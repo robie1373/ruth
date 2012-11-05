@@ -17,4 +17,8 @@ module Common
     File.join(Common.dot_ruth, "start_up.log")
   end
 
+  def Common.baseline_file
+    File.join(Common.dot_ruth, "baseline.json")
+  end
+
 end

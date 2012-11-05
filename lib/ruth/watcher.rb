@@ -9,11 +9,11 @@ module Ruth
       @watched_file_list = args[:watched_file_list]
       @time              = args[:time] || Time
       @notification      = args[:notification]
-      @baseline          = args[:baseline]
+      @logger            = args[:logger]
       @different         = args[:different]
     end
 
-    def watch(what_to_watch)
+    def watch(what_to_watch=@watched_file_list)
       callback = detect_change_type
       what_to_watch.map! { |i| ensure_directory(:file => i) }
       @listener = Listen.to(*what_to_watch)
@@ -22,7 +22,11 @@ module Ruth
 
     def run
       sleep 0.6
-      @listener.start(false)
+      if $0 == File.join("bin", "ruth")
+        @listener.start
+      else
+        @listener.start(false)
+      end
       sleep 0.6
     end
 
@@ -35,11 +39,14 @@ module Ruth
     def detect_change_type
       Proc.new do |modified, added, removed|
         if modified.length > 0
-          notification.new(:file => modified, :action => :modified, :time => time) if different?(modified)
+          notification.notify(:file => modified, :action => :modified, :time => time) if different?(modified)
+          @logger.log(:file => modified, :action => :modified, :time => time) if @logger
         elsif added.length > 0
-          notification.new(:file => added, :action => :added, :time => time)
+          notification.notify(:file => added, :action => :added, :time => time)
+          @logger.log(:file => modified, :action => :added, :time => time) if @logger
         elsif removed.length > 0
-          notification.new(:file => removed, :action => :removed, :time => time)
+          notification.notify(:file => removed, :action => :removed, :time => time)
+          @logger.log(:file => modified, :action => :removed, :time => time) if @logger
         else
           raise "unknown file event occurred"
         end
@@ -64,10 +71,6 @@ module Ruth
 
     def notification
       @notification
-    end
-
-    def baseline
-      @baseline
     end
 
     def different?(modified)

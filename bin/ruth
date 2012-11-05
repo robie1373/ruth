@@ -1,3 +1,8 @@
 #!/usr/bin/env ruby
 
-require 'ruth'
+require_relative '../lib/ruth'
+require_relative '../lib/ruth/notification'
+
+puts "Starting Ruth"
+main = Ruth::Main.new(:notification => Ruth::Notification.new(:destination => STDOUT))
+main.startup

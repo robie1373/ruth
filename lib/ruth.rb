@@ -17,15 +17,44 @@ module Ruth
   include Common
   class Main
     def initialize(args)
-      @time = args[:time] || Time.now
+      @time         = args[:time] #|| Time.new
+      @notification = args[:notification] || Notification.new(:destination => STDOUT)
     end
 
     def startup
-      place_dot_ruth
+      begin
+        write_dot_ruth_files
+        Persist.new.persist(:baseline => baseline)
+        @watcher = Watcher.new(:logger => Logger.new, :watched_file_list => files_to_watch, :time => time, :notification => @notification, :different => Different.new(:baseline => baseline))
+        @watcher.watch
+        @watcher.run
+      rescue SystemExit, Interrupt
+        puts "\nExiting Ruth."
+        log(:destination => startup_log, :message => "Ruth exiting at #{time}")
+        @watcher.stop
+      end
+    end
+
+    def stop
+      @watcher.stop
     end
 
     private
-    def place_dot_ruth
+    #def watch
+    #  Watcher.new(:watched_file_list => files_to_watch, :time => @time, :notification => @notification, :different => Different.new(:baseline => baseline))
+    #end
+
+    def baseline
+      Baseline.new.baseline(:file_list => files_to_watch, :hasher => Hasher.new)
+    end
+
+
+    def files_to_watch
+      #[File.join(Common.dot_ruth, "demo_dir")]
+      Watched_file_getter.new.watched_files
+    end
+
+    def write_dot_ruth_files
       if exists? Common.dot_ruth
         log(:destination => startup_log, :message => "Ruth starting at #{time}")
       else
@@ -50,7 +79,11 @@ module Ruth
     end
 
     def time
-      @time
+      if @time
+        @time
+      else
+        Time.now
+      end
     end
   end
 end

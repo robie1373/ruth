@@ -2,6 +2,7 @@
 module Ruth
   class Watched_file_getter
     include Common
+
     def initialize
       Struct.new("Config", :watch_list, :ignore_list)
       #noinspection RubyArgCount

@@ -105,7 +105,7 @@ module Ruth
 ##
 ############
 
-#{File.join(@dot_ruth, "dullfile.pst")}\n#{File.join(@dot_ruth, "interfolder", "bottomfolder")}}
+#{File.join(@dot_ruth, "dullfile.pst")}\n#{File.join(@dot_ruth, "interfolder", "bottomfolder")}\n#{Common.start_up_log}\n#{Common.baseline_file}\n#{File.join(Common.dot_ruth, "alerts.log")}}
 
         (File.open(File.join(@dot_ruth, "ignore_file.txt")) { |f| f.read }).strip.should == skeleton.strip
 

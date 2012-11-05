@@ -20,7 +20,7 @@ module Ruth
     describe "#watch" do
       before(:each) do
         watched_file_list = Watched_file_getter.new.watched_files
-        @time_object      = Time.now
+        @time_object      = Time.new
         @file_to_change   = File.join(Common.dot_ruth, "watchme.txt")
         File.open(@file_to_change, 'w') { |f| f.write "This is the only line allowed in this file." }
         file_list     = Housekeeper.new(:mode => :test).dir_contents
@@ -31,21 +31,21 @@ module Ruth
       end
 
       it "must signal when a file in its base has changed", :speed => 'slow' do
-        @notification.should_receive(:new)
+        @notification.should_receive(:notify)
         @watcher.run
         File.open(@file_to_change, 'a') { |f| f.write "This is a change" }
         @watcher.stop
       end
 
       it "must signal if the contents of the file has changed", :speed => 'slow' do
-        @notification.should_receive(:new)
+        @notification.should_receive(:notify)
         @watcher.run
         File.open(@file_to_change, 'a') { |f| f.write "This is a change" }
         @watcher.stop
       end
 
       it "must not signal if a file was accessed but not changed", :speed => 'slow' do
-        @notification.should_not_receive(:new)
+        @notification.should_not_receive(:notify)
         @watcher.run
         File.read @file_to_change
         @watcher.stop
@@ -53,7 +53,7 @@ module Ruth
 
       it "must signal when a file in a subdir has changed", :speed => 'slow' do
         file_to_change = File.join(Common.dot_ruth, "interfolder", "newfile.txt")
-        @notification.should_receive(:new)
+        @notification.should_receive(:notify)
         @watcher.run
         FileUtils.touch file_to_change
         @watcher.stop
@@ -65,14 +65,14 @@ module Ruth
       end
 
       it "must include the change action and time in the notification", :speed => 'slow' do
-        @notification.should_receive(:new).with(:file => kind_of(Array), :action => :modified, :time => @time_object)
+        @notification.should_receive(:notify).with(:file => kind_of(Array), :action => :modified, :time => @time_object)
         @watcher.run
         File.open(@file_to_change, 'a') { |f| f.write "This is a change" }
         @watcher.stop
       end
 
       it "must include the file paths that were changed in the notification", :speed => 'slow' do
-        @notification.should_receive(:new) do |args|
+        @notification.should_receive(:notify) do |args|
           args[:file].should include(@file_to_change)
         end
         @watcher.run
@@ -82,7 +82,7 @@ module Ruth
 
       it "must set :action => :added when a file is created", :speed => 'slow' do
         file_to_add = File.join(Common.dot_ruth, "added_during_test.txt")
-        @notification.should_receive(:new) do |args|
+        @notification.should_receive(:notify) do |args|
           args[:action].should == :added
         end
         @watcher.run
@@ -99,7 +99,7 @@ module Ruth
       it "must set :action => :removed when a file is deleted", :speed => 'slow' do
         file_to_remove = File.join(Common.dot_ruth, "removed_during_test.txt")
         FileUtils.touch file_to_remove
-        @notification.should_receive(:new) do |args|
+        @notification.should_receive(:notify) do |args|
           args[:action].should == :removed
         end
         @watcher.run
