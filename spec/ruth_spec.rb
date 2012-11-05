@@ -3,6 +3,10 @@ require_relative './spec_helper'
 module Ruth
   include Set_up_methods
   describe Main do
+    before(:all) do
+      Housekeeper.new(:mode => :test).clean_up_ruth
+    end
+
     before(:each) do
       @housekeeper  = Housekeeper.new(:mode => :test)
       @start_up_log = Common.start_up_log

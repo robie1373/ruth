@@ -10,6 +10,7 @@ module Ruth
   describe Watcher do
     include Set_up_methods
     before(:all) do
+      Housekeeper.new(:mode => :test).clean_up_ruth
       Set_up_methods.keep_house
     end
 

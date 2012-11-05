@@ -5,6 +5,7 @@ module Ruth
 
   describe Logger do
     before(:all) do
+      Housekeeper.new(:mode => :test).clean_up_ruth
       Set_up_methods.keep_house
     end
 

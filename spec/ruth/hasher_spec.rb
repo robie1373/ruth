@@ -5,6 +5,7 @@ module Ruth
   describe Hasher do
     include Set_up_methods
     before(:all) do
+      Housekeeper.new(:mode => :test).clean_up_ruth
       Set_up_methods.keep_house
       @path = File.join(Common.dot_ruth, "watch_file.txt")
       @data = File.read @path

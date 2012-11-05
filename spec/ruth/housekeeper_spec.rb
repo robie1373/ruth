@@ -2,6 +2,9 @@ require_relative '../spec_helper'
 
 module Ruth
   describe Housekeeper do
+    before(:all) do
+      Housekeeper.new(:mode => :test).clean_up_ruth
+    end
 
     before(:each) do
       @housekeeper = Housekeeper.new(:mode => :test)
