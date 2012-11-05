@@ -1,5 +1,8 @@
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start do
+  add_group "Code", "lib"
+  add_group "Tests", "spec"
+end
 
 require 'rspec'
 require 'win32console' if RUBY_PLATFORM =~ /(win32|w32)/

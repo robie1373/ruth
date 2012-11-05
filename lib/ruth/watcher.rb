@@ -39,14 +39,19 @@ module Ruth
     def detect_change_type
       Proc.new do |modified, added, removed|
         if modified.length > 0
-          notification.notify(:file => modified, :action => :modified, :time => time) if different?(modified)
-          @logger.log(:file => modified, :action => :modified, :time => time) if @logger
+          if different?(modified)
+            event = { :file => modified, :action => :modified, :time => time }
+            notification.notify(event)
+            @logger.log(event) if @logger
+          end
         elsif added.length > 0
-          notification.notify(:file => added, :action => :added, :time => time)
-          @logger.log(:file => modified, :action => :added, :time => time) if @logger
+          event = { :file => added, :action => :added, :time => time }
+          notification.notify(event)
+          @logger.log(event) if @logger
         elsif removed.length > 0
-          notification.notify(:file => removed, :action => :removed, :time => time)
-          @logger.log(:file => modified, :action => :removed, :time => time) if @logger
+          event = { :file => removed, :action => :removed, :time => time }
+          notification.notify(event)
+          @logger.log(event) if @logger
         else
           raise "unknown file event occurred"
         end

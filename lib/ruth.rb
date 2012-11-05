@@ -58,7 +58,11 @@ module Ruth
       if exists? Common.dot_ruth
         log(:destination => startup_log, :message => "Ruth starting at #{time}")
       else
-        housekeeper = Housekeeper.new(:mode => :production)
+        if $0 == "bin/ruth"
+          housekeeper = Housekeeper.new(:mode => :production)
+        else
+          housekeeper = Housekeeper.new(:mode => :test)
+        end
         housekeeper.init_ruth
         log(:destination => startup_log, :message => "No .ruth detected. Creating now.")
       end
