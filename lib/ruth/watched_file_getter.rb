@@ -4,9 +4,8 @@ module Ruth
     include Common
 
     def initialize
-      Struct.new("Config", :watch_list, :ignore_list)
-      #noinspection RubyArgCount
-      @config = Struct::Config.new(parse_configs(read_config_file(watch_file)), parse_configs(read_config_file(ignore_file)))
+      config = Struct.new(:watch_list, :ignore_list)
+      @config = config.new(parse_configs(read_config_file(watch_file)), parse_configs(read_config_file(ignore_file)))
     end
 
     def config
